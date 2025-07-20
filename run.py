@@ -2,7 +2,7 @@
 import os
 import re
 
-PLANS_DIR = "AI_APPS/plans"  # تأكد أن المسار صحيح حسب مكان الخطط
+PLANS_DIR = "AI_APPS/"  
 
 def extract_python_blocks(text):
     pattern = r"```python\n(.*?)```"
