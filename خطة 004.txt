@@ -1,0 +1,89 @@
+خطة 4: ربط المحرك البرمجي بتحليل الملفات وتشغيل المشاريع
+
+الوصف العام:
+في هذه الخطة نربط المساعد الذكي بمحرك قادر على تحليل وتشغيل الملفات من أنواع مختلفة (Python, PHP, HTML, EXE, APK)، وتمكينه من استعراض وتفسير سلوك البرنامج، وتنفيذ الأوامر عليه، مما يتيح تجربة تحليل وتشغيل فورية.
+
+المكونات البرمجية التفصيلية:
+
+1. التعرف على نوع الملف:
+   - عند إدخال ملف، يتم استخدام مكتبة مثل `python-magic` أو `mimetypes` للتعرف على نوع الملف:
+     ```python
+     import mimetypes
+     mime_type, _ = mimetypes.guess_type("file.py")
+     if mime_type == "text/x-python":
+         # تحليل كود بايثون
+     ```
+
+2. تشغيل وتحليل ملفات Python:
+   - استخدم `exec` لتشغيل الكود في مساحة معزولة (sandbox):
+     ```python
+     exec(open("file.py").read(), globals(), locals())
+     ```
+   - أو استخدم subprocess مع بيئة معزولة:
+     ```python
+     import subprocess
+     result = subprocess.run(["python", "file.py"], capture_output=True)
+     ```
+
+3. تحليل ملفات PHP:
+   - تشغيل ملف PHP باستخدام سيرفر محلي:
+     ```bash
+     php -S localhost:8000 -t /path/to/php/files
+     ```
+   - أو تنفيذ مباشر:
+     ```bash
+     php file.php
+     ```
+
+4. تحليل ملفات HTML:
+   - فتح الملف في متصفح مدمج أو متصفح حقيقي (مثل استخدام Selenium لتحليل ديناميكي):
+     ```python
+     from selenium import webdriver
+     driver = webdriver.Chrome()
+     driver.get("file:///path/to/file.html")
+     ```
+
+5. تشغيل وتحليل EXE:
+   - باستخدام `subprocess` وواجهة رسومية لتحذير المستخدم:
+     ```python
+     subprocess.Popen(["path/to/file.exe"])
+     ```
+   - أو باستخدام أدوات تحليل مثل PEfile:
+     ```python
+     import pefile
+     pe = pefile.PE("file.exe")
+     ```
+
+6. تحليل ملفات APK:
+   - استخدم `androguard` أو `apktool`:
+     ```bash
+     apktool d file.apk -o output_folder
+     ```
+   - تحليل صلاحيات التطبيق:
+     ```python
+     from androguard.core.bytecodes.apk import APK
+     app = APK("file.apk")
+     print(app.get_permissions())
+     ```
+
+7. واجهة المستخدم لتشغيل الملفات:
+   - بناء واجهة تتيح للمستخدم اختيار ملف، رؤية نوعه، واختياره للتحليل أو التشغيل.
+   - توفير تحذيرات أمنية عند تشغيل EXE/APK.
+
+8. عزل العمليات والتحكم في الأمان:
+   - استخدم Docker أو VM لعزل التشغيل عند الحاجة.
+   - مراقبة استهلاك الموارد باستخدام `psutil`.
+
+9. ربط هذه المهام بالمساعد الذكي:
+   - عند قول المستخدم مثلاً "افتح ملف PHP وحلله"، يقوم المساعد بتحليل نوع الملف، اختيار المحرك المناسب، عرض التحليل وتشغيل النتيجة.
+
+10. حفظ سجل التشغيل والتحليل:
+    - تخزين النتائج في قاعدة بيانات داخلية، وربط كل عملية بالمستخدم/التاريخ/النتيجة.
+    - مثال:
+      ```python
+      history.append({
+          "file": "file.py",
+          "type": "python",
+          "output": result.stdout.decode()
+      })
+      ```
