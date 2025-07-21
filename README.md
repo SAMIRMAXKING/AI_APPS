@@ -15,4 +15,6 @@ This repository contains a minimal prototype implementing the **Interactive AI C
    ./start.sh
    ```
 
+If the environment lacks internet access, install the npm packages for both `client` and `server` directories manually before running the script.
+
 The frontend includes a floating chat widget that communicates with the backend for context‑aware assistance.
